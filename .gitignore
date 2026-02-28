@@ -468,3 +468,11 @@ data/*.png
 
 # OS
 .DS_Store
+
+__pycache__/
+*.pyc
+data/audit_payload/
+data/*.csv
+data/*.png
+data/input/sample.jpg
+data/input/*.json
