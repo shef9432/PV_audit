@@ -1,42 +1,48 @@
 import pandas as pd
 import os
-from utils.logger import AuditLogger
+import json
 
-class InferenceEngine:
-    """
-    Abstract wrapper for the model under audit.
-    To use with a specific model, implement the prediction logic below.
-    """
+class InferenceAuditor:
     def __init__(self, model_source):
-        print(f"🔄 Initializing Inference Engine with source: {model_source}")
-        # Example for GitHub: You can use a generic loader here
-        # For your local YOLO test, you would use: from ultralytics import YOLO; self.model = YOLO(model_source)
-        self.model = None 
+        self.model = None # Placeholder for your company model
+        print(f"Auditor initialized for: {model_source}")
 
-    def predict_confidence(self, image_path):
-        """Returns the maximum confidence score for detected objects."""
-        # STUB: Replace with real inference call
-        # results = self.model(image_path)
-        # return results.max_conf
-        return 0.0 
+    def calculate_iou(self, box1, box2):
+        """Calculates Intersection over Union (IoU) between two boxes [x1, y1, x2, y2]."""
+        x_left = max(box1[0], box2[0])
+        y_top = max(box1[1], box2[1])
+        x_right = min(box1[2], box2[2])
+        y_bottom = min(box1[3], box2[3])
 
-def run_benchmark():
-    logger = AuditLogger(report_path="data/audit_report.csv")
-    df = pd.read_csv(logger.report_path)
-    
-    # Define generic model variants (e.g., Small, Medium, Large)
-    model_variants = ['Variant_A', 'Variant_B', 'Variant_C'] 
-
-    for var in model_variants:
-        engine = InferenceEngine(var)
-        conf_column = f"Conf_{var}"
+        if x_right < x_left or y_bottom < y_top:
+            return 0.0
         
-        print(f"🧐 Auditing {var}...")
-        df[conf_column] = [engine.predict_confidence(os.path.join("data/audit_payload", row['Image_Path'])) 
-                           for _, row in df.iterrows()]
+        intersection_area = (x_right - x_left) * (y_bottom - y_top)
+        area1 = (box1[2] - box1[0]) * (box1[3] - box1[1])
+        area2 = (box2[2] - box2[0]) * (box2[3] - box2[1])
+        
+        return intersection_area / float(area1 + area2 - intersection_area)
 
-    logger.update_results(df)
-    print("✅ Benchmark complete. Report generated.")
+    def validate_prediction(self, pred_results, gt_json_path):
+        """
+        Validates if the prediction matches the Ground Truth.
+        pred_results: list of {'box': [x1,y1,x2,y2], 'class': 0, 'conf': 0.9}
+        """
+        with open(gt_json_path, 'r') as f:
+            gt_data = json.load(f) # Assuming standard format: {"boxes": [[...]], "labels": [0]}
+        
+        best_valid_conf = 0.0
+        
+        for pred in pred_results:
+            for gt_box, gt_label in zip(gt_data['boxes'], gt_data['labels']):
+                iou = self.calculate_iou(pred['box'], gt_box)
+                # Check if it's the right object in the right place
+                if iou > 0.5 and pred['class'] == gt_label:
+                    best_valid_conf = max(best_valid_conf, pred['conf'])
+        
+        return best_valid_conf
 
-if __name__ == "__main__":
-    run_benchmark()
+def run_systematic_audit():
+    # ... previous logic to loop through data ...
+    # Now includes: conf = auditor.validate_prediction(raw_preds, "data/input/sample.json")
+    pass
