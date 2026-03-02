@@ -2,15 +2,24 @@
 
 **Quantifying the Operational Design Domain (ODD) for Industrial AI Systems.**
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Field](https://img.shields.io/badge/Industry-Industrial%20Automation-blue.svg)]()
+[![Field](https://img.shields.io/badge/Field-Computer%20Vision-blue.svg)]()
+[![Standard](https://img.shields.io/badge/Standard-Industrial%20ODD-orange.svg)]()
+[![Focus](https://img.shields.io/badge/Focus-AI%20Robustness-gold.svg)]()
+[![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Industry](https://img.shields.io/badge/Industry-Automotive%20OEM-red.svg)]()
+[![Medical](https://img.shields.io/badge/Medical-Diagnostic%20AI-success.svg)]()
+[![Autonomous](https://img.shields.io/badge/Autonomous-Drive%20ODD-blueviolet.svg)]()
+[![SmartMfg](https://img.shields.io/badge/Smart%20Mfg-Industry%204.0-critical.svg)]()
+[![Status](https://img.shields.io/badge/Status-Production--Proven-blue.svg)]()
+
 
 ### 🚩 Overview
 In industrial deployment, AI model performance is often susceptible to fluctuations in physical environments. **Physical_Validator** is a decoupled evaluation framework designed to quantify the performance boundaries of computer vision models under various physical variables, such as lighting changes, motion blur, and sensor noise.
 
 This framework serves as a **Physical Audit Layer** for deploying vision AI in manufacturing environments. By introducing controlled physical corruption operators, it assists engineers in defining the **Safe Operating Area (SOA)** of algorithms, providing quantitative benchmarks for production-ready AI.
 
-**Status:** Successfully validated for vision AI auditing within a **Tier-1 Automotive OEM** production line to establish environmental tolerance standards.
+**Status:** Successfully validated for vision AI auditing within a **Automotive OEM** production line to establish environmental tolerance standards.
 
 ---
 
