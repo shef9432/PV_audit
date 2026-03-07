@@ -1,4 +1,4 @@
-# PV-audit (Physical_Validator (PV) ) 🛡️
+# PV-audit (Physical_Validator) 🛡️
 
 **Quantifying the Operational Design Domain (ODD) for Industrial AI Systems.**
 
